@@ -1,0 +1,71 @@
+1.SQL，英文全称Structured Query Language，中文意思是结构化查询语言。它是一种对关系数据库中的数据进行定义和操作的语言方法，是大多数关系数据库管理系统所支持的工业标准。
+SQL分类：
+DDL:数据定义语言，CREATE,ALTER,DROP。管理基础数据 <--运维熟练
+DCL:数据控制语言，GRANT,REVOKE,COMMIT,ROLLBACK,用户授权，权限回收，数据提交回滚 <--运维要熟悉
+DML:数据操作语言，SELECT,INSERT,DELETE,UPDATE，针对数据库里的表里的数据进行操作 <--开发熟练，运维了解
+
+1.为表的字段创建索引
+  drop table student;
+  crreate table student(
+      id int(11) not null AUTO_INCREMENT,
+      name varchar(6) not null,
+      age tinyint(2) not null default '0',
+      primary key(id),
+      key index_name(name)
+  )engine=InnoDB;
+  
+2.查看创建的表结构：
+  desc student;
+  
+3.查看表的索引
+   show index from student;
+   
+4.建表后利用alter增加普通索引，删除建表时创建的index_name索引
+    （1）语法：alter table 表名 add|drop index 索引名称
+        alter table student add index index_name;
+        alter table student drop index index_name;
+        
+     (2)create创建索引
+        create index 索引名称 on 表名称（字段名）
+      eg:
+        create index index_name on student(name);
+5.创建联合索引：
+    （1）语法：create index 索引名称 on 表名称(字段名称);
+     eg:
+        create index index_name_age on student(name,age);
+        
+6.创建唯一索引：
+    （1）语法：create unique index index_name on 表名称(字段名称)；
+    
+7.索引列的创建及生效条件
+  Q1：既然索引可以加快查询速度，那么就给所有的列加索引吧？
+  A1：因为索引不但占用系统空间，而且更新数据时还需要维护索引数据的，因此索引是一把双刃剑，并不是越多越好，例如：数十到几百行的小表上无需建立索引，插入更新频繁，读取比较少的需要少建立索引.
+
+  Q2：需要在哪些列上创建索引才能加快查询速度呢？
+  select user,host from mysql.user where
+  password=…..,索引一定要创建在where后的条件列上，而不是select后的选择数据的列上。另外，我们要尽量选择在唯一值多的大表上的列建立索引，例如，男女生性别列唯一值少，不适合建立索引。
+
+8.查看唯一值数量
+   select count(distinct user) from mysql.user;
+   唯一值就是相同的数量，例如查询user那么相同的user就是唯一值
+   
+9.创建索引的基本知识小结：
+   ■索引类似书籍的目录，会加快查询数据的速度 
+   ■ 要在表的列（字段）上创建索引 
+   ■ 索引会加快查询速度，但是也会影响更新的速度，因为更新要在维护索引数据 
+   ■ 索引列并不是越多越好，要在频繁查询的表语句where后的条件列上创建索引 
+   ■ 小表或重复值很多的列上可以不建索引，要在大表以及重复值少的条件上创建索引 
+   ■ 多个列联合索引有前缀生效特性 
+   ■ 当字段内容前N个字符已经接近唯一时，可以对字段的前N个字符创建索引 
+   ■ 索引从工作方式区别，有主键，唯一，普通索引 
+   ■ 索引类型有BTREE(默认)和hash（适合做缓存（内存数据库））等。
+
+（10）主键索引和唯一索引的区别
+  (1)对于主键/unique constraint oracle/sql server/mysql等都会自动建立唯一索引； 
+  (2)主键不一定只包含一个字段，所以如果你在主键的其中一个字段建唯一索引还是必要的； 
+  (3)主健可作外健，唯一索引不可； 
+  (4)主健不可为空，唯一索引可； 
+  (5)主健也可是多个字段的组合； 
+  (6)主键与唯一索引不同的是： 
+  a.有not null属性； 
+  b.每个表只能有一个。
