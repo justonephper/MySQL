@@ -6,7 +6,7 @@ DML:数据操作语言，SELECT,INSERT,DELETE,UPDATE，针对数据库里的表�
 
 1.为表的字段创建索引
   drop table student;
-  crreate table student(
+  create table student(
       id int(11) not null AUTO_INCREMENT,
       name varchar(6) not null,
       age tinyint(2) not null default '0',
