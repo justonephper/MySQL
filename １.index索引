@@ -69,3 +69,9 @@ DML:数据操作语言，SELECT,INSERT,DELETE,UPDATE，针对数据库里的表�
   (6)主键与唯一索引不同的是： 
   a.有not null属性； 
   b.每个表只能有一个。
+  
+  (11)索引失效？
+  
+  
+  
+  
