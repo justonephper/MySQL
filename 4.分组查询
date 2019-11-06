@@ -12,3 +12,9 @@ select product_id,count(*) as num from `order` group by product_id having num > 
 
 select user_id,sum(price) as money from `order` group by user_id order by money desc limit 10;
 
+#group by
+将查询出的结果进行分组，所以筛选条件where必须放在group　by 之前执行
+group by 的结果筛选使用having
+group by 可以按照多个字段进行分组
+查询字段，select之后，只能查询分组字段和聚合函数结果，例如Sql1中的product_id,num
+
